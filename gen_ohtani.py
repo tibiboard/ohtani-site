@@ -109,6 +109,25 @@ for name in PLAYERS:
         continue
 others_html = "\n".join(others_rows) if others_rows else "<tr><td>取得中</td></tr>"
 
+# ---- 元気なお年寄りコーナー(手動更新: genki.json があれば表示) ----
+genki_html = ""
+try:
+    g = json.load(open("genki.json", encoding="utf-8"))
+    items = "".join(
+        f'<p style="font-size:19px; margin:8px 0"><b>{e["title"]}</b><br>{e["body"]}'
+        + (f'<br><a href="{e["url"]}" target="_blank" style="color:#1565c0">くわしく見る</a>' if e.get("url") else "")
+        + "</p>"
+        for e in g.get("items", [])[:3]
+    )
+    if items:
+        genki_html = f"""
+  <div class="card">
+    <div class="label">💪 今週の元気なお年寄り</div>
+    {items}
+  </div>"""
+except FileNotFoundError:
+    pass
+
 season_hr, season_avg, season_rbi = hit.get("homeRuns", "-"), hit.get("avg", "-"), hit.get("rbi", "-")
 updated = datetime.now(JST).strftime("%m月%d日 %H:%M")
 yt = "https://www.youtube.com/results?search_query=" + urllib.parse.quote("大谷翔平 ハイライト")
@@ -165,8 +184,17 @@ html = f"""<!DOCTYPE html>
   <div class="card">
     <div class="label">これからの試合(日本時間)</div>
     <table>{week_html}</table>
-    <a class="btn" href="{nhk}" target="_blank">📺 NHKの番組表で放送を確認</a>
   </div>
+
+  <div class="card">
+    <div class="label">試合はどこで見られる?</div>
+    <p style="font-size:18px; text-align:center; margin:6px 0 10px">
+      ドジャースの試合は、だいたい<b>NHK BS</b>か<b>ネット配信</b>で見られます
+    </p>
+    <a class="btn" href="{nhk}" target="_blank">📺 NHKの番組表を確認する</a>
+    <a class="btn" href="https://abema.tv/now-on-air/mlb" target="_blank">📱 ABEMAで見る(ネット)</a>
+    <a class="btn" href="https://www.spotvnow.jp/" target="_blank">🖥 SPOTV NOWで見る(ネット)</a>
+  </div>{genki_html}
 
   <div class="card">
     <div class="label">大谷さんのニュース</div>
