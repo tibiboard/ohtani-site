@@ -2,9 +2,10 @@ name: update
 on:
   schedule:
     # 日本時間の 8:00 / 12:00 / 15:00 に更新(UTC 23:00 / 3:00 / 6:00)
-    - cron: "0 23 * * *"
-    - cron: "0 3 * * *"
-    - cron: "0 6 * * *"
+    - cron: "17 22 * * *"
+    - cron: "17 2 * * *"
+    - cron: "17 5 * * *"
+    - cron: "47 8 * * *"
   workflow_dispatch:
 permissions:
   contents: write
