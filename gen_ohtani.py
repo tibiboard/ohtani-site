@@ -221,6 +221,7 @@ html = f"""<!DOCTYPE html>
           color: #fff; text-decoration: none; border-radius: 14px; padding: 14px;
           margin: 8px 0; }}
   .btn.red {{ background: #c62828; }}
+  .btn.green {{ background: #2e7d32; }}
   .foot {{ text-align: center; color: #999; font-size: 15px; }}
   .vid {{ display: flex; gap: 10px; align-items: center; text-decoration: none;
           color: #222; padding: 8px 0; border-bottom: 1px solid #eee; }}
@@ -245,6 +246,7 @@ html = f"""<!DOCTYPE html>
       <div>打率<b>{season_avg}</b></div>
       <div>打点<b>{season_rbi}</b></div>
     </div>
+    <a class="btn green" href="seiseki.html">📊 大谷さんの全成績を見る</a>
   </div>
 
   <div class="card">
@@ -410,7 +412,7 @@ for pub, title, vid, chname, _p in vids[:3]:
 cards = [
     _card("きょうの天気(" + WX_NAME + ")", wx_html),
     _card(f"{gdate}の大谷さん", f'<div class="hbig" style="color:{color}">{headline}</div><div class="hmid">{line}</div>'),
-    _card("大谷さんの今シーズン", f'<div class="hmid">ホームラン</div><div class="hbig">{season_hr}本</div><div class="hmid">打率 {season_avg} / 打点 {season_rbi}</div>'),
+    _card("大谷さんの今シーズン", f'<div class="hmid">ホームラン</div><div class="hbig">{season_hr}本</div><div class="hmid">打率 {season_avg} / 打点 {season_rbi}</div><a class="golink" href="seiseki.html">📊 全成績を見る</a>'),
     _card("おすもう", sumo_html),
     _card("はたけ・家庭菜園", saien_html),
     _card("きょうの健康ひとこと", kenko_html),
@@ -442,6 +444,7 @@ app_html = f"""<!DOCTYPE html>
   .vt2 {{ display:block; font-size:24px; line-height:1.5; margin-top:8px; }}
   .tap {{ display:block; font-size:26px; color:#fff; background:#c62828; border-radius:14px; padding:12px; margin-top:10px; }}
   .once {{ text-align:center; color:#888; font-size:19px; margin-top:10px; }}
+  .golink {{ display:block; text-align:center; font-size:24px; color:#fff; background:#2e7d32; border-radius:14px; padding:12px; margin-top:16px; text-decoration:none; }}
   .hint {{ position:fixed; bottom:8px; left:0; right:0; text-align:center; color:#bbb; font-size:17px; pointer-events:none; }}
 {SISTER_CSS}
 </style></head><body>
@@ -455,5 +458,202 @@ open("app.html", "w", encoding="utf-8").write(app_html)
 print("app.html 出力OK(カード", len(cards)+1, "枚)")
 
 
+# ================================================================
+# ==== 全成績ページ (seiseki.html) 2026-07-20 ====
+# MLB公式StatsAPIから状況別打率(statSplits)/月別(byMonth)/直近試合(gameLog)/
+# 投手成績(登板があれば)を取得。取得できなかった項目はページに載せない(捏造しない)。
+# ================================================================
+SEISEKI_SEASON = datetime.now(JST).year
+
+def _sd(st, key):
+    v = st.get(key)
+    return str(v) if v not in (None, "", "-") else "-"
+
+# ---- 状況別打率 ----
+SIT_CODES = [
+    ("h",    "ホーム(本拠地)", "自分のチームの球場での成績"),
+    ("a",    "ビジター(遠征)", "相手チームの球場での成績"),
+    ("vl",   "対左投手", "左投げの投手と対戦した時の成績"),
+    ("vr",   "対右投手", "右投げの投手と対戦した時の成績"),
+    ("risp", "得点圏", "ランナーが2塁か3塁にいる場面。チャンスに強いかが分かる"),
+    ("r123", "満塁", "ランナーが1・2・3塁すべてにいる場面。一番のチャンス"),
+    ("lc",   "終盤の接戦", "試合終盤で点差が少ない、緊迫した場面"),
+]
+sit_rows = []
+try:
+    codes_param = ",".join(c for c, _, _ in SIT_CODES)
+    d = get_json(f"https://statsapi.mlb.com/api/v1/people/{OHTANI}/stats?stats=statSplits&sitCodes={codes_param}&group=hitting&season={SEISEKI_SEASON}")
+    by_code = {}
+    for s in (d["stats"][0]["splits"] if d["stats"] else []):
+        by_code[s.get("split", {}).get("code")] = s["stat"]
+    for code, label, desc in SIT_CODES:
+        st = by_code.get(code)
+        if not st:
+            continue
+        sit_rows.append(
+            f"<tr><td><b>{label}</b><br><span class='note'>{desc}</span></td>"
+            f"<td>{_sd(st,'avg')}</td><td>{_sd(st,'atBats')}</td>"
+            f"<td>{_sd(st,'homeRuns')}</td><td>{_sd(st,'rbi')}</td></tr>"
+        )
+except Exception:
+    pass
+sit_html = "\n".join(sit_rows) if sit_rows else "<tr><td colspan=5>状況別データを取得できませんでした</td></tr>"
+
+# ---- 月別成績 ----
+MONTH_NAMES = {2:"2月",3:"3月",4:"4月",5:"5月",6:"6月",7:"7月",8:"8月",9:"9月",10:"10月",11:"11月"}
+month_rows = []
+try:
+    d = get_json(f"https://statsapi.mlb.com/api/v1/people/{OHTANI}/stats?stats=byMonth&group=hitting&season={SEISEKI_SEASON}")
+    splits = d["stats"][0]["splits"] if d["stats"] else []
+    splits.sort(key=lambda s: s.get("month", 0))
+    for s in splits:
+        st = s["stat"]
+        m = MONTH_NAMES.get(s.get("month"), str(s.get("month")))
+        month_rows.append(f"<tr><td><b>{m}</b></td><td>{_sd(st,'avg')}</td><td>{_sd(st,'homeRuns')}</td><td>{_sd(st,'rbi')}</td><td>{_sd(st,'ops')}</td></tr>")
+except Exception:
+    pass
+month_html = "\n".join(month_rows) if month_rows else "<tr><td colspan=5>月別データを取得できませんでした</td></tr>"
+
+# ---- 直近10試合ログ(打撃) ----
+gamelog_rows = []
+try:
+    d = get_json(f"https://statsapi.mlb.com/api/v1/people/{OHTANI}/stats?stats=gameLog&group=hitting&season={SEISEKI_SEASON}")
+    splits = d["stats"][0]["splits"] if d["stats"] else []
+    for s in splits[-10:][::-1]:
+        st = s["stat"]
+        t = datetime.fromisoformat(s["date"])
+        opp = s.get("opponent", {}).get("name", "")
+        summary = st.get("summary", "")
+        gamelog_rows.append(f"<tr><td>{t.month}/{t.day}</td><td>{opp}</td><td>{summary}</td></tr>")
+except Exception:
+    pass
+gamelog_html = "\n".join(gamelog_rows) if gamelog_rows else "<tr><td colspan=3>試合ログを取得できませんでした</td></tr>"
+
+# ---- 投手成績(登板があれば) ----
+pitch_card_html = ""
+pitch_rows = []
+try:
+    d = get_json(f"https://statsapi.mlb.com/api/v1/people/{OHTANI}/stats?stats=season&group=pitching&season={SEISEKI_SEASON}")
+    psplits = d["stats"][0]["splits"] if d["stats"] else []
+    if psplits:
+        pst = psplits[0]["stat"]
+        era, wl = _sd(pst, "era"), f"{_sd(pst,'wins')}勝{_sd(pst,'losses')}敗"
+        so, whip = _sd(pst, "strikeOuts"), _sd(pst, "whip")
+        ip, starts = _sd(pst, "inningsPitched"), _sd(pst, "gamesStarted")
+
+        try:
+            dg = get_json(f"https://statsapi.mlb.com/api/v1/people/{OHTANI}/stats?stats=gameLog&group=pitching&season={SEISEKI_SEASON}")
+            gsplits = dg["stats"][0]["splits"] if dg["stats"] else []
+            for s in gsplits[-5:][::-1]:
+                st2 = s["stat"]
+                t = datetime.fromisoformat(s["date"])
+                opp = s.get("opponent", {}).get("name", "")
+                summary = st2.get("summary", "")
+                pitch_rows.append(f"<tr><td>{t.month}/{t.day}</td><td>{opp}</td><td>{summary}</td></tr>")
+        except Exception:
+            pass
+        pitch_log_html = "\n".join(pitch_rows) if pitch_rows else "<tr><td colspan=3>登板ログを取得できませんでした</td></tr>"
+
+        pitch_card_html = f"""
+  <div class="card">
+    <div class="label">投手成績(今シーズン{starts}登板)</div>
+    <div class="stats">
+      <div>防御率<b>{era}</b></div>
+      <div>勝敗<b>{wl}</b></div>
+      <div>奪三振<b>{so}</b></div>
+    </div>
+    <div class="mininote">投球回 {ip} / WHIP {whip}(1イニングあたりの走者数、低いほど良い)</div>
+    <div class="note tblnote">防御率(ERA)=9イニングあたりの平均失点。数字が低いほど好投しているということです</div>
+    <table class="mt">
+      <tr><th>日付</th><th>対戦相手</th><th>結果</th></tr>
+      {pitch_log_html}
+    </table>
+    <div class="note tblnote">直近の登板結果です。IP=投球回、ER=自責点、K=奪三振、BB=四球</div>
+  </div>"""
+except Exception:
+    pitch_card_html = ""
+
+season_avg2, season_hr2, season_rbi2 = hit.get("avg", "-"), hit.get("homeRuns", "-"), hit.get("rbi", "-")
+season_ops2, season_sb2 = hit.get("ops", "-"), hit.get("stolenBases", "-")
+seiseki_updated = datetime.now(JST).strftime("%Y年%m月%d日 %H:%M")
+
+seiseki_html = f"""<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>大谷翔平 全成績</title>
+<style>
+  body {{ font-family: "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif; margin: 0;
+         background: #fffdf7; color: #222; line-height: 1.7; }}
+  .wrap {{ max-width: 560px; margin: 0 auto; padding: 20px 14px 60px; }}
+  h1 {{ font-size: 32px; text-align: center; margin: 8px 0 2px; }}
+  .date {{ text-align: center; color: #777; font-size: 16px; margin-bottom: 16px; }}
+  .card {{ background: #fff; border: 3px solid #e0e0e0; border-radius: 18px;
+           padding: 20px; margin-bottom: 16px; }}
+  .label {{ font-size: 21px; color: #666; text-align: center; margin-bottom: 8px; }}
+  .stats {{ display: flex; justify-content: space-around; flex-wrap: wrap; }}
+  .stats div {{ font-size: 17px; color: #666; text-align: center; padding: 6px 4px; min-width: 30%; }}
+  .stats b {{ display: block; font-size: 28px; color: #222; }}
+  table {{ width: 100%; border-collapse: collapse; font-size: 17px; }}
+  table.mt {{ margin-top: 10px; }}
+  th {{ text-align: left; font-size: 14px; color: #999; padding: 4px; border-bottom: 2px solid #ddd; }}
+  td {{ padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: top; }}
+  .note {{ font-size: 13px; color: #999; }}
+  .tblnote {{ margin-top: 8px; text-align: center; }}
+  .mininote {{ font-size: 14px; color: #888; text-align: center; margin: 4px 0 2px; }}
+  .btn {{ display: block; text-align: center; font-size: 20px; background: #1565c0;
+          color: #fff; text-decoration: none; border-radius: 14px; padding: 12px;
+          margin: 6px 0; }}
+  .foot {{ text-align: center; color: #999; font-size: 14px; }}
+{SISTER_CSS}
+</style></head><body><div class="wrap">
+  <h1>⚾ 大谷翔平 全成績</h1>
+  <div class="date">{seiseki_updated} 時点のデータ(MLB公式StatsAPIより取得)</div>
+
+  <div class="card">
+    <div class="label">今シーズンの基本成績</div>
+    <div class="stats">
+      <div>打率<b>{season_avg2}</b></div>
+      <div>本塁打<b>{season_hr2}本</b></div>
+      <div>打点<b>{season_rbi2}</b></div>
+      <div>OPS<b>{season_ops2}</b></div>
+      <div>盗塁<b>{season_sb2}</b></div>
+    </div>
+    <div class="note tblnote">OPS=出塁率+長打率。打者の総合力を表す指標で、.900あれば一流の目安です</div>
+  </div>
+
+  <div class="card">
+    <div class="label">状況別の打率</div>
+    <table>
+      <tr><th>場面</th><th>打率</th><th>打数</th><th>本塁打</th><th>打点</th></tr>
+      {sit_html}
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="label">月別成績</div>
+    <table>
+      <tr><th>月</th><th>打率</th><th>本塁打</th><th>打点</th><th>OPS</th></tr>
+      {month_html}
+    </table>
+    <div class="note tblnote">月ごとの成績です。調子の波や好不調が分かります</div>
+  </div>
+
+  <div class="card">
+    <div class="label">直近10試合の結果</div>
+    <table>
+      <tr><th>日付</th><th>対戦相手</th><th>結果</th></tr>
+      {gamelog_html}
+    </table>
+    <div class="note tblnote">最新の試合が一番上です。数字は「打数-安打」、Kは三振</div>
+  </div>{pitch_card_html}
+
+  <a class="btn" href="index.html">⬅ 今日の大谷さんに戻る</a>
+
+  <div class="foot">非公式のファン情報ページです / 成績: MLB公式データより自動取得({seiseki_updated})</div>
+  {sister_footer_html()}
+</div></body></html>"""
+
+open("seiseki.html", "w", encoding="utf-8").write(seiseki_html)
+print(f"seiseki.html 出力OK(状況別{len(sit_rows)}件 / 月別{len(month_rows)}件 / 試合ログ{len(gamelog_rows)}件 / 投手成績{'あり(' + str(len(pitch_rows)) + '登板)' if pitch_card_html else 'なし'})")
 
 print(f"生成OK: {gdate} {headline} / 予定{len(week_rows)}試合 / 他選手{len(others_rows)}人 / ニュース{'OK' if 'news' in news_html else '取得済'}")
