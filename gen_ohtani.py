@@ -10,6 +10,31 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 JST = timezone(timedelta(hours=9))
 OHTANI = 660271
 
+# ポンポコ系列サイト相互リンク(URLは決まり次第ここに入れるだけ。空のものはフッターから自動で省かれる)
+SISTER_SITES = [
+    ("青春プレイバック", ""),
+    ("ライフハック検証ラボ", ""),
+    ("人生年表", ""),
+    ("知ったかぶり知識人入門", ""),
+    ("ことばの音ラボ", ""),
+    ("スポーツ創設委員会", ""),
+]
+
+def sister_footer_html():
+    links = [(n, u) for n, u in SISTER_SITES if u]
+    if not links:
+        return ""
+    items = "".join(f'<a href="{u}">{n}</a>' for n, u in links)
+    return f'<div class="sister-footer"><span class="sister-label">ポンポコ系列のサイト</span>{items}</div>'
+
+# シニアも見るサイトなので他系列サイトより一回り大きめの文字サイズ
+SISTER_CSS = """
+  .sister-footer { max-width:560px; margin:24px auto 0; padding:18px 14px 0; border-top:1px solid #e0e0e0;
+    text-align:center; font-size:16px; color:#888; }
+  .sister-footer .sister-label { display:block; margin-bottom:10px; font-weight:bold; font-size:17px; }
+  .sister-footer a { color:#1565c0; margin:0 10px; text-decoration:underline; line-height:2.2; }
+"""
+
 def get(url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=30) as r:
@@ -202,6 +227,7 @@ html = f"""<!DOCTYPE html>
   .vid img {{ width: 148px; border-radius: 10px; flex-shrink: 0; }}
   .vt {{ font-size: 17px; line-height: 1.4; display: block; }}
   .vc {{ font-size: 14px; color: #999; display: block; margin-left: 6px; }}
+{SISTER_CSS}
 </style></head><body><div class="wrap">
   <h1>⚾ 今日の大谷さん</h1>
   <div class="date">{updated} 更新</div>
@@ -254,6 +280,7 @@ html = f"""<!DOCTYPE html>
   </div>
 
   <div class="foot">非公式のファン情報ページです / 成績: MLB公式データより自動取得</div>
+  {sister_footer_html()}
 </div></body></html>"""
 
 open("index.html", "w", encoding="utf-8").write(html)
@@ -416,10 +443,11 @@ app_html = f"""<!DOCTYPE html>
   .tap {{ display:block; font-size:26px; color:#fff; background:#c62828; border-radius:14px; padding:12px; margin-top:10px; }}
   .once {{ text-align:center; color:#888; font-size:19px; margin-top:10px; }}
   .hint {{ position:fixed; bottom:8px; left:0; right:0; text-align:center; color:#bbb; font-size:17px; pointer-events:none; }}
+{SISTER_CSS}
 </style></head><body>
 <div class="snap">
 {"".join(cards)}
-<section class="cardp"><div class="lab">おしまい</div><div class="hmid">下へスライドすると<br>もどれます</div><div class="hmid" style="color:#888;margin-top:18px;font-size:20px">{updated} こうしん</div></section>
+<section class="cardp"><div class="lab">おしまい</div><div class="hmid">下へスライドすると<br>もどれます</div><div class="hmid" style="color:#888;margin-top:18px;font-size:20px">{updated} こうしん</div>{sister_footer_html()}</section>
 </div>
 <div class="hint">⬆ 上にスライドすると次のページ</div>
 </body></html>"""
