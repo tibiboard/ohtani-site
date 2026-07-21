@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>元気度あそび</title>
+<style>
+  :root{
+    --bg:#fffdf7; --ink:#222; --sub:#5a5a5a;
+    --accent:#1565c0; --accent-dark:#0d47a1;
+    --green:#2e7d32; --green-dark:#1b5e20;
+    --star:#f2a900; --star-off:#ddd6c4;
+    --card:#ffffff; --line:#e6e0d0;
+    --warn-bg:#fff3e0; --warn-ink:#7a4a00;
+    --danger:#b23b3b;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; overflow-x:hidden; background:var(--bg); }
+  body{
+    font-family:"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+    color:var(--ink); line-height:1.85; font-size:21px;
+  }
+  .wrap{ max-width:560px; margin:0 auto; padding:22px 20px 60px; min-height:100vh; }
+  .screen{ display:none; }
+  .screen.on{ display:block; }
+
+  h1{ font-size:34px; text-align:center; margin:6px 0 4px; }
+  h2{ font-size:28px; text-align:center; margin:10px 0 8px; }
+  .icon-big{ font-size:64px; text-align:center; margin:6px 0; }
+  .lead{ font-size:22px; text-align:center; color:var(--sub); margin:0 0 18px; }
+  .body-text{ font-size:22px; text-align:center; margin:14px 0; }
+  .safety-note{ font-size:20px; color:var(--warn-ink); background:var(--warn-bg);
+    border:2px solid #ffd9a0; border-radius:16px; padding:14px 16px; margin:16px 0; text-align:center; }
+
+  .big-btn{
+    display:block; width:100%; margin:16px 0; padding:22px 14px;
+    font-size:26px; font-weight:bold; color:#fff; background:var(--accent);
+    border:none; border-radius:20px; box-shadow:0 6px 0 var(--accent-dark);
+    cursor:pointer; touch-action:manipulation; text-align:center;
+  }
+  .big-btn:active{ transform:translateY(4px); box-shadow:0 2px 0 var(--accent-dark); }
+  .big-btn:disabled{ opacity:.55; }
+  .big-btn.green{ background:var(--green); box-shadow:0 6px 0 var(--green-dark); }
+  .big-btn.gray{ background:#8a8a8a; box-shadow:0 6px 0 #5c5c5c; }
+  .big-btn.outline{ background:#fff; color:var(--accent); border:3px solid var(--accent);
+    box-shadow:none; padding:18px 14px; font-size:23px; }
+
+  .back-row{ margin-bottom:6px; }
+  .back-btn{ font-size:20px; color:var(--accent); background:none; border:none; padding:10px 4px;
+    cursor:pointer; font-weight:bold; }
+
+  .divider{ border:none; border-top:2px dashed var(--line); margin:26px 0; }
+
+  .footer-note{ font-size:20px; color:var(--sub); text-align:center; margin-top:26px;
+    border-top:2px solid var(--line); padding-top:16px; }
+
+  /* ---- running screens ---- */
+  .stage{ text-align:center; margin:20px 0; }
+  .countdown-num{ font-size:120px; font-weight:bold; color:var(--accent); line-height:1; }
+  .pulse-circle{ width:180px; height:180px; border-radius:50%; background:#e3f0fb; margin:10px auto;
+    display:flex; align-items:center; justify-content:center; animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.06); } }
+  .running-msg{ font-size:23px; text-align:center; color:var(--sub); margin:8px 0 4px; }
+
+  .gauge-wrap{ text-align:center; margin:16px 0; }
+  .gauge{ position:relative; width:240px; height:130px; margin:0 auto; overflow:hidden; }
+  .gauge-bg{ width:240px; height:240px; border-radius:50%; border:16px solid #e3f0fb;
+    border-bottom-color:transparent; border-left-color:transparent; border-right-color:transparent;
+    box-sizing:border-box; position:absolute; top:0; left:0; }
+  .needle{ position:absolute; left:120px; bottom:0; width:6px; height:110px; background:var(--accent);
+    border-radius:6px; transform-origin:bottom center; transform:rotate(0deg); transition:transform .08s linear; }
+  .needle-hub{ position:absolute; left:112px; bottom:-8px; width:16px; height:16px; border-radius:50%;
+    background:var(--accent-dark); }
+
+  .step-num{ font-size:110px; font-weight:bold; color:var(--green); line-height:1; text-align:center; }
+  .step-label{ font-size:22px; text-align:center; color:var(--sub); }
+  .step-icon{ font-size:56px; text-align:center; margin:6px 0; animation:walkbounce 1s ease-in-out infinite; }
+  @keyframes walkbounce{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-8px); } }
+
+  /* ---- result ---- */
+  .stars{ text-align:center; font-size:60px; letter-spacing:6px; margin:14px 0; }
+  .stars .on{ color:var(--star); }
+  .stars .off{ color:var(--star-off); }
+  .result-msg{ font-size:25px; text-align:center; margin:10px 0 18px; font-weight:bold; }
+  .disclaimer{ font-size:20px; color:var(--warn-ink); background:var(--warn-bg);
+    border:2px solid #ffd9a0; border-radius:16px; padding:16px; text-align:center; margin:16px 0 6px; }
+
+  /* ---- records ---- */
+  .rec-row{ display:flex; align-items:center; justify-content:space-between; gap:10px;
+    border-bottom:2px solid var(--line); padding:14px 2px; }
+  .rec-when{ font-size:19px; color:var(--sub); }
+  .rec-play{ font-size:21px; font-weight:bold; }
+  .rec-stars{ font-size:34px; letter-spacing:2px; white-space:nowrap; }
+  .rec-stars .on{ color:var(--star); }
+  .rec-stars .off{ color:var(--star-off); }
+  .empty-note{ font-size:22px; text-align:center; color:var(--sub); margin:30px 0; }
+
+  /* ---- unsupported ---- */
+  .unsupported-msg{ font-size:23px; text-align:center; margin:16px 0 24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ ホーム ============ -->
+  <section class="screen on" id="scr-home">
+    <div class="icon-big">🌤️</div>
+    <h1>元気度あそび</h1>
+    <p class="lead">スマホをつかった、かんたんあそびです。</p>
+    <p class="body-text">上から順番に、あそんでみてください。むりをしなくて、だいじょうぶですよ。</p>
+
+    <button class="big-btn" onclick="goIntro('balance')">🧍 ぐらぐらしないかな?</button>
+    <button class="big-btn" onclick="goIntro('tremor')">✋ 手のふるえ見てみよう</button>
+    <button class="big-btn" onclick="goIntro('walk')">🚶 ゆっくり10歩あるこう</button>
+
+    <hr class="divider">
+
+    <button class="big-btn outline" onclick="goRecords()">📖 これまでのきろく</button>
+
+    <p class="footer-note">※ここでのけっかは、あそびの目安です。けんこうのご判断は、お医者さんにごそうだんください。</p>
+  </section>
+
+  <!-- ============ あそびの説明 ============ -->
+  <section class="screen" id="scr-intro">
+    <div class="back-row"><button class="back-btn" onclick="goHome()">← もどる</button></div>
+    <div class="icon-big" id="introIcon"></div>
+    <h2 id="introTitle"></h2>
+    <p class="body-text" id="introBody"></p>
+    <p class="safety-note" id="introSafety"></p>
+    <button class="big-btn" id="introStartBtn" onclick="onStartTapped()">🚀 はじめる</button>
+  </section>
+
+  <!-- ============ あそんでいるところ ============ -->
+  <section class="screen" id="scr-running">
+    <p class="running-msg" id="runningMsg"></p>
+
+    <div id="run-balance" class="stage" style="display:none;">
+      <div class="pulse-circle"><div class="countdown-num" id="balanceCountdown">10</div></div>
+    </div>
+
+    <div id="run-tremor" style="display:none;">
+      <div class="gauge-wrap">
+        <div class="gauge">
+          <div class="gauge-bg"></div>
+          <div class="needle" id="tremorNeedle"></div>
+          <div class="needle-hub"></div>
+        </div>
+      </div>
+      <div class="countdown-num" id="tremorCountdown" style="font-size:60px;">10</div>
+    </div>
+
+    <div id="run-walk" style="display:none;">
+      <div class="step-icon">🚶</div>
+      <div class="step-num" id="walkStepNum">0</div>
+      <div class="step-label">あるいた かず(10歩まで)</div>
+    </div>
+
+    <button class="big-btn gray" onclick="cancelPlay()">✋ やめる</button>
+  </section>
+
+  <!-- ============ けっか ============ -->
+  <section class="screen" id="scr-result">
+    <h2 id="resultTitle"></h2>
+    <div class="stars" id="resultStars"></div>
+    <p class="result-msg" id="resultMsg"></p>
+    <p class="disclaimer">測定結果は遊びの目安です。健康の判断はお医者さんにごそうだんください。</p>
+    <button class="big-btn green" onclick="retryPlay()">🔁 もう一度あそぶ</button>
+    <button class="big-btn outline" onclick="goHome()">🏠 ホームへ</button>
+  </section>
+
+  <!-- ============ これまでのきろく ============ -->
+  <section class="screen" id="scr-records">
+    <div class="back-row"><button class="back-btn" onclick="goHome()">← もどる</button></div>
+    <h2>📖 これまでのきろく</h2>
+    <p class="lead">さいきん7かいぶんです。</p>
+    <div id="recordsList"></div>
+    <button class="big-btn outline" onclick="goHome()">🏠 ホームへ</button>
+  </section>
+
+  <!-- ============ あそべなかったとき ============ -->
+  <section class="screen" id="scr-unsupported">
+    <div class="icon-big">🙏</div>
+    <h2>あそべないようです</h2>
+    <p class="unsupported-msg" id="unsupportedMsg"></p>
+    <button class="big-btn" onclick="retryFromUnsupported()">🔄 もう一度ためす</button>
+    <button class="big-btn outline" onclick="goHome()">🏠 ホームへ</button>
+  </section>
+
+</div>
+
+<script>
+/* =======================================================================
+   元気度あそび - シニア向け・スマホセンサーあそび
+   注意: これは「あそび」「きろく」であり、健康の診断・測定機能ではない。
+   すべての結果表現(星1でも)は、責めない・診断しない、やさしい言い回しに徹する。
+   iOS権限リクエストのパターンは F:\zmk-dev\site\asobi\index.html を参考にした
+   (DeviceOrientationEvent.requestPermission / DeviceMotionEvent.requestPermission を
+    「はじめる」ボタンの click ハンドラ内で同期的に呼ぶ)。
+   ======================================================================= */
+
+var PLAY_META = {
+  balance: {
+    icon: '🧍', title: 'ぐらぐらしないかな?',
+    body: 'スマホを両手で、胸の前に持ってください。そのまま、10びょう立ってみましょう。ゆっくりで、だいじょうぶです。',
+    safety: '※ 立つのがむずかしいときは、いすに座ったままでも、だいじょうぶですよ。',
+    runningMsg: 'そのまま、じっとしていてくださいね。'
+  },
+  tremor: {
+    icon: '✋', title: '手のふるえ見てみよう',
+    body: 'スマホを片手で持ってください。そのまま10びょう、じっとしていてくださいね。きょうのようすを見てみましょう。',
+    safety: '※ どちらの手でもだいじょうぶです。楽なほうの手で持ってくださいね。',
+    runningMsg: 'そのまま、じっとしていてくださいね。'
+  },
+  walk: {
+    icon: '🚶', title: 'ゆっくり10歩あるこう',
+    body: 'スマホをズボンやスカートのポケットに入れてください。ゆっくり、10歩あるいてみましょう。タイムは計りませんので、あわてなくて大丈夫です。',
+    safety: '※ まわりに気をつけて、あんぜんな場所であるいてくださいね。',
+    runningMsg: 'ゆっくり、あるいてみてくださいね。'
+  }
+};
+
+// 星ごとのやさしい一言。星が少なくても、決して責めたり診断したりしない。
+var MESSAGES = {
+  balance: {
+    5: 'きょうは、しっかり安定していますね。',
+    4: 'なかなか安定していましたよ。',
+    3: 'ちょうどよいゆらゆら感でした。',
+    2: 'ゆらゆら、楽しく揺れていましたね。',
+    1: '元気にゆらゆら動いていましたね。'
+  },
+  tremor: {
+    5: 'きょうは、とても落ち着いたようすでした。',
+    4: 'おだやかなようすでしたよ。',
+    3: 'いつも通りのようすでした。',
+    2: 'きょうは元気にゆれるようすでしたね。',
+    1: 'きょうは活発にゆれるようすでしたね。'
+  },
+  walk: {
+    5: 'リズムがぴったりでしたね。',
+    4: 'いいリズムで歩けていましたよ。',
+    3: 'ゆったりしたリズムでしたね。',
+    2: '自由なリズムで楽しく歩けましたね。',
+    1: 'のんびり、自分のペースで歩けましたね。'
+  }
+};
+
+var currentPlay = null;      // 'balance' | 'tremor' | 'walk'
+var measuring = null;        // 現在計測中のあそび(同上)。nullなら計測していない。
+var lastAttemptReason = null;
+
+// ---- センサー生データの保持 ----
+var orientationState = { beta: null, gamma: null };
+var sensorsDetected = false;
+
+var balanceSamples = [];     // {beta, gamma}
+var tremorSamples = [];      // 加速度の大きさ(重力を除いたおおよその値)
+var walkStepTimes = [];      // 歩を検出した時刻(ms)
+var walkAboveThreshold = false;
+var walkLastStepTime = 0;
+
+var playTimer = null;        // setInterval / setTimeout の後始末用
+
+// ------------------------------------------------------------------
+// 画面切り替え
+// ------------------------------------------------------------------
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('on'); });
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0, 0);
+}
+function goHome(){ stopMeasuringAll(); showScreen('scr-home'); }
+function goRecords(){ renderRecords(); showScreen('scr-records'); }
+
+function goIntro(play){
+  currentPlay = play;
+  var m = PLAY_META[play];
+  document.getElementById('introIcon').textContent = m.icon;
+  document.getElementById('introTitle').textContent = m.title;
+  document.getElementById('introBody').textContent = m.body;
+  document.getElementById('introSafety').textContent = m.safety;
+  var btn = document.getElementById('introStartBtn');
+  btn.disabled = false;
+  btn.textContent = '🚀 はじめる';
+  showScreen('scr-intro');
+}
+
+// ------------------------------------------------------------------
+// WebAudio - やさしい効果音
+// ------------------------------------------------------------------
+var audioCtx = null;
+function ensureAudio(){
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { audioCtx = null; }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') { try { audioCtx.resume(); } catch (e) {} }
+}
+function beep(freq, start, dur, type, vol){
+  if (!audioCtx) return;
+  var t0 = audioCtx.currentTime + start;
+  var osc = audioCtx.createOscillator();
+  var gain = audioCtx.createGain();
+  osc.type = type || 'sine';
+  osc.frequency.setValueAtTime(freq, t0);
+  gain.gain.setValueAtTime(0.0001, t0);
+  gain.gain.linearRampToValueAtTime(vol || 0.12, t0 + 0.06);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(t0); osc.stop(t0 + dur + 0.05);
+}
+function playStartChime(){ beep(660, 0, 0.5, 'sine', 0.14); beep(880, 0.18, 0.5, 'sine', 0.12); }
+function playEndBell(){ beep(523.25, 0, 0.9, 'sine', 0.14); }
+function playStepTick(){ beep(740, 0, 0.12, 'sine', 0.08); }
+// 星の数にかかわらず、いつも同じ、やさしい上昇アルペジオを鳴らす(結果を音で責めない)
+function playResultChime(){
+  [523.25, 659.25, 783.99].forEach(function (f, i) { beep(f, i * 0.14, 0.5, 'triangle', 0.13); });
+}
+
+// ------------------------------------------------------------------
+// センサー権限のリクエスト(iOS対応)
+// はじめるボタンの click ハンドラ内で同期的に呼び出す必要がある。
+// ------------------------------------------------------------------
+function requestSensorPermissions(){
+  var tasks = [];
+  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+    tasks.push(DeviceOrientationEvent.requestPermission());
+  } else {
+    tasks.push(Promise.resolve('granted'));
+  }
+  if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+    tasks.push(DeviceMotionEvent.requestPermission());
+  } else {
+    tasks.push(Promise.resolve('granted'));
+  }
+  return Promise.all(tasks);
+}
+
+function onOrientation(e){
+  if (e.alpha != null || e.beta != null || e.gamma != null) sensorsDetected = true;
+  orientationState.beta = e.beta;
+  orientationState.gamma = e.gamma;
+  if (measuring === 'balance' && e.beta != null && e.gamma != null) {
+    balanceSamples.push({ beta: e.beta, gamma: e.gamma });
+  }
+}
+function onMotion(e){
+  var ag = e.accelerationIncludingGravity;
+  var a = e.acceleration;
+  if ((ag && ag.x != null) || (a && a.x != null)) sensorsDetected = true;
+
+  if (measuring === 'tremor') {
+    var mag;
+    if (a && a.x != null) {
+      mag = Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+    } else if (ag && ag.x != null) {
+      mag = Math.sqrt(ag.x * ag.x + ag.y * ag.y + ag.z * ag.z) - 9.8;
+    } else {
+      mag = 0;
+    }
+    tremorSamples.push(mag);
+    updateNeedle(mag);
+  }
+
+  if (measuring === 'walk') {
+    var gm;
+    if (ag && ag.x != null) {
+      gm = Math.sqrt(ag.x * ag.x + ag.y * ag.y + ag.z * ag.z);
+    } else if (a && a.x != null) {
+      gm = Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z) + 9.8;
+    } else {
+      gm = 9.8;
+    }
+    detectStep(gm, e.timeStamp || performance.now());
+  }
+}
+window.addEventListener('deviceorientation', onOrientation);
+window.addEventListener('devicemotion', onMotion);
+
+// ------------------------------------------------------------------
+// 「はじめる」タップ: 権限確認 → センサー検出確認 → あそび開始
+// ------------------------------------------------------------------
+function onStartTapped(){
+  ensureAudio(); // AudioContextはユーザー操作内で生成/再開する必要がある
+  var btn = document.getElementById('introStartBtn');
+  btn.disabled = true;
+  btn.textContent = 'たしかめています…';
+
+  requestSensorPermissions().then(function (results) {
+    if (results.indexOf('denied') !== -1) {
+      lastAttemptReason = 'denied';
+      showUnsupported('denied');
+      btn.disabled = false; btn.textContent = '🚀 はじめる';
+      return;
+    }
+    sensorsDetected = false;
+    setTimeout(function () {
+      if (sensorsDetected) {
+        beginPlay(currentPlay);
+      } else {
+        lastAttemptReason = 'no-sensor';
+        showUnsupported('no-sensor');
+      }
+      btn.disabled = false; btn.textContent = '🚀 はじめる';
+    }, 1200);
+  }).catch(function () {
+    lastAttemptReason = 'error';
+    showUnsupported('error');
+    btn.disabled = false; btn.textContent = '🚀 はじめる';
+  });
+}
+
+function showUnsupported(reason){
+  var msgs = {
+    denied: 'うごきを感じるための「きょか」が、まだオンになっていないようです。iPhoneの場合は「設定 → Safari → モーションと方向」を確認して、オンにしてから、もう一度おためしください。',
+    'no-sensor': 'このきき(パソコンなど)では、うごきセンサーが使えないようです。スマートフォンのブラウザ(Safariなど)で、このページを開いてみてください。',
+    error: 'うまくセンサーを使えませんでした。もう一度、ためしてみてくださいね。'
+  };
+  document.getElementById('unsupportedMsg').textContent = msgs[reason] || msgs['no-sensor'];
+  showScreen('scr-unsupported');
+}
+function retryFromUnsupported(){
+  if (currentPlay) { goIntro(currentPlay); } else { goHome(); }
+}
+
+// ------------------------------------------------------------------
+// あそび開始・計測・終了(共通)
+// ------------------------------------------------------------------
+function beginPlay(play){
+  playStartChime();
+  document.getElementById('runningMsg').textContent = PLAY_META[play].runningMsg;
+  document.getElementById('run-balance').style.display = (play === 'balance') ? '' : 'none';
+  document.getElementById('run-tremor').style.display = (play === 'tremor') ? '' : 'none';
+  document.getElementById('run-walk').style.display = (play === 'walk') ? '' : 'none';
+  showScreen('scr-running');
+
+  if (play === 'balance') startBalance();
+  else if (play === 'tremor') startTremor();
+  else if (play === 'walk') startWalk();
+}
+
+function stopMeasuringAll(){
+  measuring = null;
+  if (playTimer) { clearInterval(playTimer); clearTimeout(playTimer); playTimer = null; }
+}
+function cancelPlay(){ stopMeasuringAll(); goHome(); }
+function retryPlay(){ if (currentPlay) goIntro(currentPlay); else goHome(); }
+
+// ---- 1) ぐらぐらしないかな? ----
+function startBalance(){
+  balanceSamples = [];
+  measuring = 'balance';
+  var remain = 10;
+  document.getElementById('balanceCountdown').textContent = remain;
+  playTimer = setInterval(function () {
+    remain -= 1;
+    if (remain <= 0) {
+      clearInterval(playTimer); playTimer = null;
+      document.getElementById('balanceCountdown').textContent = '0';
+      finishBalance();
+    } else {
+      document.getElementById('balanceCountdown').textContent = remain;
+    }
+  }, 1000);
+}
+function rangeOf(arr){ if (!arr.length) return 0; return Math.max.apply(null, arr) - Math.min.apply(null, arr); }
+function finishBalance(){
+  measuring = null;
+  playEndBell();
+  var betas = balanceSamples.map(function (s) { return s.beta; });
+  var gammas = balanceSamples.map(function (s) { return s.gamma; });
+  var sway = (rangeOf(betas) + rangeOf(gammas)) / 2;
+  var stars = sway <= 3 ? 5 : sway <= 6 ? 4 : sway <= 10 ? 3 : sway <= 16 ? 2 : 1;
+  showResult('balance', stars);
+}
+
+// ---- 2) 手のふるえ見てみよう ----
+function startTremor(){
+  tremorSamples = [];
+  measuring = 'tremor';
+  var remain = 10;
+  document.getElementById('tremorCountdown').textContent = remain;
+  playTimer = setInterval(function () {
+    remain -= 1;
+    if (remain <= 0) {
+      clearInterval(playTimer); playTimer = null;
+      document.getElementById('tremorCountdown').textContent = '0';
+      finishTremor();
+    } else {
+      document.getElementById('tremorCountdown').textContent = remain;
+    }
+  }, 1000);
+}
+function updateNeedle(mag){
+  var deg = Math.max(-80, Math.min(80, mag * 40)); // 見やすいように増幅して針を振る
+  document.getElementById('tremorNeedle').style.transform = 'rotate(' + deg + 'deg)';
+}
+function stddev(arr){
+  if (!arr.length) return 0;
+  var m = arr.reduce(function (a, b) { return a + b; }, 0) / arr.length;
+  var v = arr.reduce(function (a, b) { return a + (b - m) * (b - m); }, 0) / arr.length;
+  return Math.sqrt(v);
+}
+function finishTremor(){
+  measuring = null;
+  playEndBell();
+  document.getElementById('tremorNeedle').style.transform = 'rotate(0deg)';
+  var sd = stddev(tremorSamples);
+  var stars = sd <= 0.15 ? 5 : sd <= 0.3 ? 4 : sd <= 0.6 ? 3 : sd <= 1.0 ? 2 : 1;
+  showResult('tremor', stars);
+}
+
+// ---- 3) ゆっくり10歩あるこう ----
+function startWalk(){
+  walkStepTimes = [];
+  walkAboveThreshold = false;
+  walkLastStepTime = 0;
+  measuring = 'walk';
+  document.getElementById('walkStepNum').textContent = '0';
+}
+function detectStep(gm, t){
+  var ON = 11.5, OFF = 10.2;
+  if (!walkAboveThreshold && gm > ON && (t - walkLastStepTime) > 300) {
+    walkAboveThreshold = true;
+    walkLastStepTime = t;
+    walkStepTimes.push(t);
+    playStepTick();
+    document.getElementById('walkStepNum').textContent = String(walkStepTimes.length);
+    if (walkStepTimes.length >= 10) finishWalk();
+  } else if (walkAboveThreshold && gm < OFF) {
+    walkAboveThreshold = false;
+  }
+}
+function finishWalk(){
+  measuring = null;
+  playEndBell();
+  var intervals = [];
+  for (var i = 1; i < walkStepTimes.length; i++) intervals.push(walkStepTimes[i] - walkStepTimes[i - 1]);
+  var mean = intervals.reduce(function (a, b) { return a + b; }, 0) / (intervals.length || 1);
+  var sd = stddev(intervals);
+  var cv = mean > 0 ? sd / mean : 1;
+  var stars = cv <= 0.08 ? 5 : cv <= 0.15 ? 4 : cv <= 0.25 ? 3 : cv <= 0.4 ? 2 : 1;
+  showResult('walk', stars);
+}
+
+// ------------------------------------------------------------------
+// 結果表示・きろく保存
+// ------------------------------------------------------------------
+function showResult(play, stars){
+  playResultChime();
+  var m = PLAY_META[play];
+  document.getElementById('resultTitle').textContent = m.icon + ' ' + m.title + ' の きろく';
+  var starsHtml = '';
+  for (var i = 1; i <= 5; i++) starsHtml += '<span class="' + (i <= stars ? 'on' : 'off') + '">★</span>';
+  document.getElementById('resultStars').innerHTML = starsHtml;
+  document.getElementById('resultMsg').textContent = MESSAGES[play][stars];
+  saveRecord(play, stars);
+  showScreen('scr-result');
+}
+
+function pad2(n){ return (n < 10 ? '0' : '') + n; }
+function saveRecord(play, stars){
+  var recs = [];
+  try { recs = JSON.parse(localStorage.getItem('genki_records') || '[]'); } catch (e) { recs = []; }
+  var now = new Date();
+  recs.push({
+    date: now.getFullYear() + '/' + pad2(now.getMonth() + 1) + '/' + pad2(now.getDate()),
+    time: pad2(now.getHours()) + ':' + pad2(now.getMinutes()),
+    play: play, stars: stars
+  });
+  if (recs.length > 200) recs = recs.slice(recs.length - 200);
+  try { localStorage.setItem('genki_records', JSON.stringify(recs)); } catch (e) {}
+}
+function renderRecords(){
+  var recs = [];
+  try { recs = JSON.parse(localStorage.getItem('genki_records') || '[]'); } catch (e) { recs = []; }
+  var last7 = recs.slice(-7).reverse();
+  var el = document.getElementById('recordsList');
+  if (!last7.length) {
+    el.innerHTML = '<p class="empty-note">まだ、きろくがありません。あそんでみましょうね!</p>';
+    return;
+  }
+  var html = '';
+  last7.forEach(function (r) {
+    var m = PLAY_META[r.play] || { icon: '🌟', title: '' };
+    var starsHtml = '';
+    for (var i = 1; i <= 5; i++) starsHtml += '<span class="' + (i <= r.stars ? 'on' : 'off') + '">★</span>';
+    html += '<div class="rec-row">' +
+      '<div><div class="rec-play">' + m.icon + ' ' + m.title + '</div>' +
+      '<div class="rec-when">' + r.date + ' ' + r.time + '</div></div>' +
+      '<div class="rec-stars">' + starsHtml + '</div>' +
+      '</div>';
+  });
+  el.innerHTML = html;
+}
+</script>
+</body>
+</html>
