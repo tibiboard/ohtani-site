@@ -1,0 +1,4 @@
+{
+  "_使い方": "載せたいXのポストURLを posts に追記して python gen_ohtani.py を実行(公式oEmbed埋め込み・最大8件)",
+  "posts": []
+}

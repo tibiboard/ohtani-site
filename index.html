@@ -31,7 +31,18 @@
           color: #222; padding: 8px 0; border-bottom: 1px solid #eee; }
   .vid img { width: 148px; border-radius: 10px; flex-shrink: 0; }
   .vt { font-size: 17px; line-height: 1.4; display: block; }
-  .vc { font-size: 14px; color: #707070; display: block; margin-left: 6px; }
+  .vc { font-size: 14px; color: #707070; display: block; margin-top: 2px; }
+  .ntime { display: block; font-size: 14px; color: #707070; margin-left: 1em; }
+  .vgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .gvid { text-decoration: none; color: #222; display: block; }
+  .gvid img { width: 100%; border-radius: 10px; display: block; }
+  .gvid .vt { font-size: 15px; margin-top: 4px; }
+  .xembeds { margin-top: 10px; }
+  th { text-align: left; font-size: 14px; color: #707070; padding: 4px; border-bottom: 2px solid #ddd; }
+  .note { font-size: 13px; color: #707070; }
+  .tblnote { margin-top: 8px; text-align: center; }
+  .mininote { font-size: 14px; color: #5c5c5c; text-align: center; margin: 4px 0 2px; }
+  h2.sec { font-size: 26px; text-align: center; margin: 26px 0 10px; }
 
   .sister-footer { max-width:560px; margin:24px auto 0; padding:18px 14px 0; border-top:1px solid #e0e0e0;
     text-align:center; font-size:16px; color:#5c5c5c; }
@@ -40,7 +51,7 @@
 
 </style></head><body><div class="wrap">
   <h1>⚾ 今日の大谷さん</h1>
-  <div class="date">07月24日 00:39 更新</div>
+  <div class="date">07月24日 01:00 更新</div>
 
   <div class="card">
     <div class="label">7月22日の試合</div>
@@ -48,18 +59,8 @@
     <div class="mid">4打数0安打</div>
   </div>
 
-  <div class="card">
-    <div class="label">今シーズンの成績</div>
-    <div class="stats">
-      <div>ホームラン<b>22本</b></div>
-      <div>打率<b>.283</b></div>
-      <div>打点<b>60</b></div>
-    </div>
-    <a class="btn green" href="seiseki.html">📊 大谷さんの全成績を見る</a>
-  </div>
-
-  <div class="card">
-    <div class="label">これからの試合(日本時間)</div>
+  <div class="card" style="border-color:#1565c0">
+    <div class="label" style="color:#1565c0; font-weight:bold">📅 これからの試合(日本時間)</div>
     <table><tr><td>7月25日(土)</td><td>8時10分</td><td>New York Mets 戦 </td></tr>
 <tr><td>7月26日(日)</td><td>8時15分</td><td>New York Mets 戦 </td></tr>
 <tr><td>7月27日(月)</td><td>2時40分</td><td>New York Mets 戦 </td></tr>
@@ -71,50 +72,154 @@
   </div>
 
   <div class="card">
-    <div class="label">試合はどこで見られる?</div>
-    <p style="font-size:18px; text-align:center; margin:6px 0 10px">
-      ドジャースの試合は、だいたい<b>NHK BS</b>か<b>ネット配信</b>で見られます
-    </p>
-    <a class="btn" href="https://www.nhk.jp/timetable/" target="_blank">📺 NHKの番組表を確認する</a>
-    <a class="btn" href="https://abema.tv/now-on-air/mlb" target="_blank">📱 ABEMAで見る(ネット)</a>
-    <a class="btn" href="https://www.spotvnow.jp/" target="_blank">🖥 SPOTV NOWで見る(ネット)</a>
+    <div class="label">今シーズンの成績</div>
+    <div class="stats">
+      <div>ホームラン<b>22本</b></div>
+      <div>打率<b>.283</b></div>
+      <div>打点<b>60</b></div>
+    </div>
+    <a class="btn green" href="#zenseiseki">📊 くわしい全成績はこのページの下へ</a>
+  </div>
+
+  <div class="card" style="border-color:#c62828">
+    <div class="label" style="color:#c62828; font-weight:bold">🔥 大谷さんの動画とみんなの反応</div>
+    <div class="vgrid">
+    <a class="gvid" href="https://www.youtube.com/watch?v=_2ckUPlVmH8" target="_blank">
+      <img src="https://i.ytimg.com/vi/_2ckUPlVmH8/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">大谷翔平 1週間の活躍を振り返る🔥週間ダイジェスト｜MLB Japan Weekly (7/17-/23)</span><span class="vc">MLB Japan ・ 7/23</span></a>
+<a class="gvid" href="https://www.youtube.com/watch?v=iTySzFBQ7OU" target="_blank">
+      <img src="https://i.ytimg.com/vi/iTySzFBQ7OU/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">ドジャース 大谷６試合連続出塁😃ラッシング＆エドマンの下位打線が躍動‼️｜ドジャースvsフィリーズ 試合ハイライト（2026年7月23日)</span><span class="vc">MLB Japan ・ 7/23</span></a>
+<a class="gvid" href="https://www.youtube.com/watch?v=5FYjlXRm2ZA" target="_blank">
+      <img src="https://i.ytimg.com/vi/5FYjlXRm2ZA/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">大谷翔平 後半戦初アーチなるか⁉️痛烈打球連発🚀｜全打席ハイライト(7/23 vsフィリーズ)</span><span class="vc">MLB Japan ・ 7/23</span></a>
+<a class="gvid" href="https://www.youtube.com/watch?v=iaxfzrhR72o" target="_blank">
+      <img src="https://i.ytimg.com/vi/iaxfzrhR72o/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">300 reasons to love Shohei! #dodgers #sports #losangeles</span><span class="vc">ドジャース公式 ・ 7/8</span></a>
+<a class="gvid" href="https://www.youtube.com/watch?v=eaRtd6LLV94" target="_blank">
+      <img src="https://i.ytimg.com/vi/eaRtd6LLV94/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">MLB日本人野手 1週間の活躍を振り返る🔥週間ダイジェスト｜MLB Japan Weekly (7/17-/23)</span><span class="vc">MLB Japan ・ 7/23</span></a>
+<a class="gvid" href="https://www.youtube.com/watch?v=YEgeXkNIurM" target="_blank">
+      <img src="https://i.ytimg.com/vi/YEgeXkNIurM/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">MLB日本人投手 1週間の活躍を振り返る🔥週間ダイジェスト｜MLB Japan Weekly(7/17-/23)</span><span class="vc">MLB Japan ・ 7/23</span></a>
+<a class="gvid" href="https://www.youtube.com/watch?v=I6nKOzARbVU" target="_blank">
+      <img src="https://i.ytimg.com/vi/I6nKOzARbVU/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">Dodgers vs. Phillies Game Highlights (7/22/26) | MLB Highlights</span><span class="vc">ドジャース公式 ・ 7/23</span></a>
+<a class="gvid" href="https://www.youtube.com/watch?v=XQwkiJMrdzY" target="_blank">
+      <img src="https://i.ytimg.com/vi/XQwkiJMrdzY/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">DODGERS vs. PHILLIES: Official Full Game Highlights (July 22) | 2026 MLB Season</span><span class="vc">MLB公式 ・ 7/23</span></a>
+<a class="gvid" href="https://www.youtube.com/watch?v=X-HFp0yVgR4" target="_blank">
+      <img src="https://i.ytimg.com/vi/X-HFp0yVgR4/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">Dodgers vs. Phillies Game Highlights (7/21/26) | MLB Highlights</span><span class="vc">ドジャース公式 ・ 7/22</span></a>
+<a class="gvid" href="https://www.youtube.com/watch?v=uF8fGRy9QMU" target="_blank">
+      <img src="https://i.ytimg.com/vi/uF8fGRy9QMU/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">Dodgers vs. Yankees Game 1 Highlights (7/19/26) | MLB Highlights</span><span class="vc">ドジャース公式 ・ 7/20</span></a>
+<a class="gvid" href="https://www.youtube.com/watch?v=TbEQYJuYjJA" target="_blank">
+      <img src="https://i.ytimg.com/vi/TbEQYJuYjJA/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">Dodgers vs. Yankees Game Highlights (7/17/26) | MLB Highlights</span><span class="vc">ドジャース公式 ・ 7/18</span></a>
+<a class="gvid" href="https://www.youtube.com/watch?v=1IzUhDxcnxs" target="_blank">
+      <img src="https://i.ytimg.com/vi/1IzUhDxcnxs/mqdefault.jpg" alt="" loading="lazy">
+      <span class="vt">Rockies vs. Dodgers Game Highlights (7/8/26) | MLB Highlights</span><span class="vc">ドジャース公式 ・ 7/9</span></a>
+
+    </div>
+    <a class="btn red" href="https://www.youtube.com/results?search_query=%E5%A4%A7%E8%B0%B7%E7%BF%94%E5%B9%B3%20%E3%83%8F%E3%82%A4%E3%83%A9%E3%82%A4%E3%83%88" target="_blank">▶ もっとYouTubeで見る</a>
+    <div class="xembeds">
+    
+    </div>
+    <a class="btn" href="https://x.com/search?q=%E5%A4%A7%E8%B0%B7%E7%BF%94%E5%B9%B3&f=live" target="_blank">💬 Xでみんなの反応をもっと見る</a>
   </div>
 
   <div class="card">
     <div class="label">大谷さんのニュース</div>
-    <a class="news" href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5FU09NbU1EbDNva0RScDZ5RHkyYVZuanlNODVnVV9ua0EwVVVNVVNFTkxCSlBMRXFud09GcGRpUHU1MHBycjNPOWkzck1Hc2NCa3lBMy16a2lCZ19LcGlVcWxweEw2WTZmdzU0UF9xSlVGVkd4SWFQZ2l5Z2VZTUnSAYQBQVVfeXFMT2ZqU25LOTZnejJlcW13ZUxjVWRCbUkxcWRrNVpBVmpibXRLWHVkTC1Qck5Vbnc3NWR1TnFfS3k1LUFBaTJ3VWhJRk9PYkZETmg4WVowR3Z0MjZjRVh2UzA2RjRCeUVHTG9VQU9reWlKRG15Vm9LYlRSTl9GQlcyM20zSlZi?oc=5" target="_blank">・「見えるかい？」大谷翔平が現れた“意外な場所”　敵軍放送局が伝えた「興味深いもの」 - ｄメニューニュース</a>
-<a class="news" href="https://news.google.com/rss/articles/CBMiS0FVX3lxTE1ncU1wcTRkMTRRTnpva2NNdHBDR3hibFZRaC1pc0VlWWtOcHo4WXJjd0hGSFNBNldFaFU1SVdwWXd0S1FPSUt6ZHRBSQ?oc=5" target="_blank">・「大谷翔平」と「外車セダン」の２ショットに「似合いすぎ」の声も！ パワーもすごい高級車とは - くるまのニュース</a>
-<a class="news" href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5taXFydmZtM1FIa011R21QR3dGTlJGZDE0dlctVk42T0Y5N1Q0M0JnYVpUNjVDTlI3ckRPVUF3djgxX0xRY1FITDR3V204b2JjYVkwOUdwNml5ZHJySnpCeWkyZ3AyRHFUeEFiTnNqT043QjJoMWZoRGJMNFRHMnM?oc=5" target="_blank">・「当面は待つしかない」大谷翔平、今季はまさかの打者専念となる！？ 米メディアが言及「DHとしての役割に」 - Yahoo!ニュース</a>
-<a class="news" href="https://news.google.com/rss/articles/CBMiWEFVX3lxTE43QlFEUmFoS1hOVjBDM21CQ3FBa3FLZGYwM3JNUWlSNDBTMWxodjVGVFI1NmVpTFNPLVVIRy04SjRzbHlZNGFVT3ZaR3pqWFFjSHRJS2hYNnM?oc=5" target="_blank">・大谷翔平に「何が起こったんだ!?」、動揺するファン続出 日常的光景のはずが…起きた"想定外" - full-count.jp</a>
-<a class="news" href="https://news.google.com/rss/articles/CBMidkFVX3lxTFBlWkFzX01WQ0lGOVdfYUF3YlVDQnZlUkNXZThWd3NLanZEMW95Sl9OMUI5eFJuUnFBQ2F3blhuS2ZtZ3lfazhQblhDWDh2emVTT1owVmwycThyMW9Zajg2Wmo3MU5UNFBLWDhIRXp6Vml5RlRoRlE?oc=5" target="_blank">・大谷翔平４打数無安打もドジャースは逆転で圧勝 ラッシング、マンシーが１発／フィリーズ戦詳細 - 日刊スポーツ</a>
-<a class="news" href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE1mTFB1elVna0FjZlo4U0poZ1JPa1BGMldFVTlWbG5wWGQ0RWVrWGM3dXRJa2szS2V2TGNsemNMRDd4MmZtSVhIbHhpaFBZUktmdmJJeFJ5RmVlMWtUam12N0ZrQWM1T3RS?oc=5" target="_blank">・左膝違和感で先発マウンドから遠ざかっている大谷翔平、ブルペンで３１球…ロバーツ監督「大きな前進」 - 読売新聞</a>
+    <a class="news" href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5FU09NbU1EbDNva0RScDZ5RHkyYVZuanlNODVnVV9ua0EwVVVNVVNFTkxCSlBMRXFud09GcGRpUHU1MHBycjNPOWkzck1Hc2NCa3lBMy16a2lCZ19LcGlVcWxweEw2WTZmdzU0UF9xSlVGVkd4SWFQZ2l5Z2VZTUnSAYQBQVVfeXFMT2ZqU25LOTZnejJlcW13ZUxjVWRCbUkxcWRrNVpBVmpibXRLWHVkTC1Qck5Vbnc3NWR1TnFfS3k1LUFBaTJ3VWhJRk9PYkZETmg4WVowR3Z0MjZjRVh2UzA2RjRCeUVHTG9VQU9reWlKRG15Vm9LYlRSTl9GQlcyM20zSlZi?oc=5" target="_blank">・「見えるかい？」大谷翔平が現れた“意外な場所”　敵軍放送局が伝えた「興味深いもの」 - ｄメニューニュース<span class="ntime">7月23日 19時15分 配信</span></a>
+<a class="news" href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE1VSTdIOTdraDhhNTZKMFp6WS1YTVZPMkhydTBGd2h1TlA3a3FSaW1Yc295endGSXdtbXpDV2xfQy1QSlRvOHJSbGhaMF9yX0h5ZkpVcjc3VlY4UVVJ?oc=5" target="_blank">・【ドジャース】大谷翔平 打撃フォームに異変 解説者がかかと体重指摘「体が伸び切っている」 - 東スポWEB<span class="ntime">7月23日 10時36分 配信</span></a>
+<a class="news" href="https://news.google.com/rss/articles/CBMidkFVX3lxTFBlWkFzX01WQ0lGOVdfYUF3YlVDQnZlUkNXZThWd3NLanZEMW95Sl9OMUI5eFJuUnFBQ2F3blhuS2ZtZ3lfazhQblhDWDh2emVTT1owVmwycThyMW9Zajg2Wmo3MU5UNFBLWDhIRXp6Vml5RlRoRlE?oc=5" target="_blank">・大谷翔平４打数無安打もドジャースは逆転で圧勝 ラッシング、マンシーが１発／フィリーズ戦詳細 - 日刊スポーツ<span class="ntime">7月23日 12時26分 配信</span></a>
+<a class="news" href="https://news.google.com/rss/articles/CBMiWEFVX3lxTE8zUGxrTGhsUHZTYmJsLVhaZklwbmU5WExpRTRsVjlZaGN5c0hVY3JpZkJhdkVVUHdrd1hFd19GVGZwRmhnT2dCVXA5eHQyb0oxN2psZ2E0VWk?oc=5" target="_blank">・大谷翔平の右肘が…試合直後にアクシデント発生 同僚の足が直撃、まさかの"不運" - full-count.jp<span class="ntime">7月23日 11時56分 配信</span></a>
+<a class="news" href="https://news.google.com/rss/articles/CBMifkFVX3lxTFBuUG1IWUltcGtpdDZIcWdzbThXU2dxRkg3VW5mbl9VYkQxRzgxclBiMTVIaTFYZjBtS2pYWGNjSVRxQ0hCamFmcDNYczBzOWswQko1X1VEZE5FNjQ2MkE0STRmSGVyaWNZVUVUOEpleTdpdVV6RzZHMGZGcm9VUQ?oc=5" target="_blank">・大谷翔平の左膝の不透明感が後押しか ド軍26歳右腕に大型トレード急浮上！ 球界最強左腕スクーバル獲得の交換要員候補に - au Webポータル<span class="ntime">7月23日 19時17分 配信</span></a>
+<a class="news" href="https://news.google.com/rss/articles/CBMiX0FVX3lxTE5BNGpISWsxckN2TWVTTnN5QktHMlJJUE5HcFZOQ0FwN28xaHVBZldvdmFJdV9BLUZQVDBQSk5MeGxZd0RfaFpaRC1adzZNRXBHTzZEa0YyQ2NoYnVuUDJV0gFvQVVfeXFMTmtBUm45ZnJSNkNBQTgwSEpRVHpEQWlXdkZoZVRUTHh2aVVFaFB4LUpoRzVialhfNlFiTHE5QmR4aEhXMG02U2NQOTZKNnVFMWwwVXBMRmlRdW5Ga0pmZURXcTdYRWVLZUlZcnFiMzdv?oc=5" target="_blank">・両足で大谷翔平の右ひじを…ド軍同僚の“愚行”に「本当に許せない」と日本人激怒「なにしとんねん...」「え？それはあかんやろ」 | THE DIGEST - THE DIGEST<span class="ntime">7月23日 15時58分 配信</span></a>
 
+  </div>
+
+
+  <h2 class="sec" id="zenseiseki">📊 大谷さんの全成績</h2>
+  <div class="date">2026年07月24日 01:00 時点(MLB公式StatsAPIより取得)</div>
+
+  <div class="card">
+    <div class="label">今シーズンの基本成績</div>
+    <div class="stats" style="flex-wrap:wrap">
+      <div>打率<b>.283</b></div>
+      <div>本塁打<b>22本</b></div>
+      <div>打点<b>60</b></div>
+      <div>OPS<b>.917</b></div>
+      <div>盗塁<b>6</b></div>
+    </div>
+    <div class="note tblnote">OPS=出塁率+長打率。打者の総合力を表す指標で、.900あれば一流の目安です</div>
   </div>
 
   <div class="card">
-    <div class="label">大谷さんの最新動画(押すと再生)</div>
-    <a class="vid" href="https://www.youtube.com/watch?v=iaxfzrhR72o" target="_blank">
-      <img src="https://i.ytimg.com/vi/iaxfzrhR72o/mqdefault.jpg" alt="" loading="lazy">
-      <span class="vt">300 reasons to love Shohei! #dodgers #sports #losangeles</span><span class="vc">ドジャース公式</span></a>
-<a class="vid" href="https://www.youtube.com/watch?v=I6nKOzARbVU" target="_blank">
-      <img src="https://i.ytimg.com/vi/I6nKOzARbVU/mqdefault.jpg" alt="" loading="lazy">
-      <span class="vt">Dodgers vs. Phillies Game Highlights (7/22/26) | MLB Highlights</span><span class="vc">ドジャース公式</span></a>
-<a class="vid" href="https://www.youtube.com/watch?v=XQwkiJMrdzY" target="_blank">
-      <img src="https://i.ytimg.com/vi/XQwkiJMrdzY/mqdefault.jpg" alt="" loading="lazy">
-      <span class="vt">DODGERS vs. PHILLIES: Official Full Game Highlights (July 22) | 2026 MLB Season</span><span class="vc">MLB公式</span></a>
-<a class="vid" href="https://www.youtube.com/watch?v=X-HFp0yVgR4" target="_blank">
-      <img src="https://i.ytimg.com/vi/X-HFp0yVgR4/mqdefault.jpg" alt="" loading="lazy">
-      <span class="vt">Dodgers vs. Phillies Game Highlights (7/21/26) | MLB Highlights</span><span class="vc">ドジャース公式</span></a>
-<a class="vid" href="https://www.youtube.com/watch?v=uF8fGRy9QMU" target="_blank">
-      <img src="https://i.ytimg.com/vi/uF8fGRy9QMU/mqdefault.jpg" alt="" loading="lazy">
-      <span class="vt">Dodgers vs. Yankees Game 1 Highlights (7/19/26) | MLB Highlights</span><span class="vc">ドジャース公式</span></a>
-<a class="vid" href="https://www.youtube.com/watch?v=TbEQYJuYjJA" target="_blank">
-      <img src="https://i.ytimg.com/vi/TbEQYJuYjJA/mqdefault.jpg" alt="" loading="lazy">
-      <span class="vt">Dodgers vs. Yankees Game Highlights (7/17/26) | MLB Highlights</span><span class="vc">ドジャース公式</span></a>
-
-    <a class="btn red" href="https://www.youtube.com/results?search_query=%E5%A4%A7%E8%B0%B7%E7%BF%94%E5%B9%B3%20%E3%83%8F%E3%82%A4%E3%83%A9%E3%82%A4%E3%83%88" target="_blank">▶ もっとYouTubeで見る</a>
-    <a class="btn" href="https://x.com/search?q=%E5%A4%A7%E8%B0%B7%E7%BF%94%E5%B9%B3&f=live" target="_blank">💬 Xでみんなの反応を見る</a>
+    <div class="label">状況別の打率</div>
+    <table>
+      <tr><th>場面</th><th>打率</th><th>打数</th><th>本塁打</th><th>打点</th></tr>
+      <tr><td><b>ホーム(本拠地)</b><br><span class='note'>自分のチームの球場での成績</span></td><td>.274</td><td>157</td><td>13</td><td>21</td></tr>
+<tr><td><b>ビジター(遠征)</b><br><span class='note'>相手チームの球場での成績</span></td><td>.291</td><td>203</td><td>9</td><td>39</td></tr>
+<tr><td><b>対左投手</b><br><span class='note'>左投げの投手と対戦した時の成績</span></td><td>.271</td><td>118</td><td>9</td><td>20</td></tr>
+<tr><td><b>対右投手</b><br><span class='note'>右投げの投手と対戦した時の成績</span></td><td>.289</td><td>242</td><td>13</td><td>40</td></tr>
+<tr><td><b>得点圏</b><br><span class='note'>ランナーが2塁か3塁にいる場面。チャンスに強いかが分かる</span></td><td>.306</td><td>72</td><td>4</td><td>39</td></tr>
+<tr><td><b>満塁</b><br><span class='note'>ランナーが1・2・3塁すべてにいる場面。一番のチャンス</span></td><td>.400</td><td>5</td><td>0</td><td>9</td></tr>
+<tr><td><b>終盤の接戦</b><br><span class='note'>試合終盤で点差が少ない、緊迫した場面</span></td><td>.259</td><td>27</td><td>0</td><td>2</td></tr>
+    </table>
   </div>
+
+  <div class="card">
+    <div class="label">月別成績</div>
+    <table>
+      <tr><th>月</th><th>打率</th><th>本塁打</th><th>打点</th><th>OPS</th></tr>
+      <tr><td><b>3月</b></td><td>.200</td><td>0</td><td>0</td><td>.655</td></tr>
+<tr><td><b>4月</b></td><td>.284</td><td>6</td><td>13</td><td>.934</td></tr>
+<tr><td><b>5月</b></td><td>.289</td><td>4</td><td>18</td><td>.892</td></tr>
+<tr><td><b>6月</b></td><td>.333</td><td>8</td><td>19</td><td>1.091</td></tr>
+<tr><td><b>7月</b></td><td>.222</td><td>4</td><td>10</td><td>.734</td></tr>
+    </table>
+    <div class="note tblnote">月ごとの成績です。調子の波や好不調が分かります</div>
+  </div>
+
+  <div class="card">
+    <div class="label">直近10試合の結果</div>
+    <table>
+      <tr><th>日付</th><th>対戦相手</th><th>結果</th></tr>
+      <tr><td>7/22</td><td>Philadelphia Phillies</td><td>0-4 | BB</td></tr>
+<tr><td>7/21</td><td>Philadelphia Phillies</td><td>1-4 | 2 K</td></tr>
+<tr><td>7/20</td><td>Philadelphia Phillies</td><td>0-4 | BB, 2 K</td></tr>
+<tr><td>7/19</td><td>New York Yankees</td><td>1-4 | K</td></tr>
+<tr><td>7/19</td><td>New York Yankees</td><td>2-5 | 2B, K, 2 RBI</td></tr>
+<tr><td>7/17</td><td>New York Yankees</td><td>0-4</td></tr>
+<tr><td>7/12</td><td>Arizona Diamondbacks</td><td>2-4 | HR, 2B, K</td></tr>
+<tr><td>7/11</td><td>Arizona Diamondbacks</td><td>1-3</td></tr>
+<tr><td>7/10</td><td>Arizona Diamondbacks</td><td>1-4 | HR, 2 K, RBI</td></tr>
+<tr><td>7/8</td><td>Colorado Rockies</td><td>0-4 | 2 K</td></tr>
+    </table>
+    <div class="note tblnote">最新の試合が一番上です。数字は「打数-安打」、Kは三振</div>
+  </div>
+  <div class="card">
+    <div class="label">投手成績(今シーズン14登板)</div>
+    <div class="stats">
+      <div>防御率<b>1.79</b></div>
+      <div>勝敗<b>8勝2敗</b></div>
+      <div>奪三振<b>95</b></div>
+    </div>
+    <div class="mininote">投球回 85.2 / WHIP 0.95(1イニングあたりの走者数、低いほど良い)</div>
+    <div class="note tblnote">防御率(ERA)=9イニングあたりの平均失点。数字が低いほど好投しているということです</div>
+    <table class="mt">
+      <tr><th>日付</th><th>対戦相手</th><th>結果</th></tr>
+      <tr><td>7/3</td><td>San Diego Padres</td><td>6.0 IP, 3 ER, 9 K, 2 BB</td></tr>
+<tr><td>6/24</td><td>Minnesota Twins</td><td>6.0 IP, 2 ER, 8 K, 2 BB</td></tr>
+<tr><td>6/17</td><td>Tampa Bay Rays</td><td>6.0 IP, 4 ER, 5 K, BB</td></tr>
+<tr><td>6/10</td><td>Pittsburgh Pirates</td><td>6.2 IP, 3 ER, 6 K, 3 BB</td></tr>
+<tr><td>6/3</td><td>Arizona Diamondbacks</td><td>6.0 IP, 0 ER, 6 K, BB</td></tr>
+    </table>
+    <div class="note tblnote">直近の登板結果です。IP=投球回、ER=自責点、K=奪三振、BB=四球</div>
+  </div>
+
 
   <div class="card">
     <div class="label">日本人メジャーリーガーの成績</div>
@@ -124,6 +229,7 @@
 <tr><td><b>鈴木誠也</b></td><td>打率 .270 / HR 17本 / 打点 53</td></tr>
 <tr><td><b>千賀滉大</b></td><td>防御率 8.85 / 0勝7敗 / 奪三振 49</td></tr>
 <tr><td><b>吉田正尚</b></td><td>打率 .268 / HR 4本 / 打点 19</td></tr></table>
+    <div class="note tblnote">米国時間 7月23日 の試合終了分まで反映(日本の朝に更新すると前夜の米国の試合結果が入ります)</div>
   </div>
 
   <div class="foot">非公式のファン情報ページです / 成績: MLB公式データより自動取得</div>
