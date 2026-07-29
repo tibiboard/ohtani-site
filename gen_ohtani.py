@@ -350,7 +350,7 @@ html = f"""<!DOCTYPE html>
 
   <div class="foot">非公式のファン情報ページです / 成績: MLB公式データより自動取得</div>
   {sister_footer_html()}
-</div></body></html>"""
+</div><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "be81dd55e4c042b09b9763edd4863484"}}'></script></body></html>"""
 # ※ index.html はこの後、全成績カードを差し込んでから書き出す(ファイル末尾参照)
 
 # ---- お父さん用スワイプ版 app.html(大谷+相撲+天気)2026-07-19 ----
@@ -519,7 +519,7 @@ app_html = f"""<!DOCTYPE html>
 <section class="cardp"><div class="lab">おしまい</div><div class="hmid">下へスライドすると<br>もどれます</div><div class="hmid" style="color:#5c5c5c;margin-top:18px;font-size:20px">{updated} こうしん</div>{sister_footer_html()}</section>
 </div>
 <div class="hint">⬆ 上にスライドすると次のページ</div>
-</body></html>"""
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "be81dd55e4c042b09b9763edd4863484"}}'></script></body></html>"""
 open("app.html", "w", encoding="utf-8").write(app_html)
 print("app.html 出力OK(カード", len(cards)+1, "枚)")
 
@@ -697,6 +697,7 @@ open("seiseki.html", "w", encoding="utf-8").write(
     '<title>移動しました</title></head><body>'
     '<p style="font-family:sans-serif;font-size:20px;text-align:center;margin-top:40px">'
     '全成績はトップページに引っ越しました。<a href="index.html#zenseiseki">こちらへどうぞ</a></p>'
+    "<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{\"token\": \"be81dd55e4c042b09b9763edd4863484\"}'></script>"
     "</body></html>"
 )
 print(f"index.html 出力OK(全成績統合: 状況別{len(sit_rows)}件 / 月別{len(month_rows)}件 / 試合ログ{len(gamelog_rows)}件 / 投手成績{'あり(' + str(len(pitch_rows)) + '登板)' if pitch_card_html else 'なし'} / 動画{len(vids[:12])}本 / X埋め込み{x_embed_count}件)")
