@@ -49,8 +49,8 @@ def sister_footer_html():
 
 # シニアも見るサイトなので他系列サイトより一回り大きめの文字サイズ
 SISTER_CSS = """
-  .sister-footer { max-width:560px; margin:24px auto 0; padding:18px 14px 0; border-top:1px solid #e0e0e0;
-    text-align:center; font-size:16px; color:#5c5c5c; }
+  .sister-footer { max-width:560px; margin:24px auto 0; padding:18px 14px 0; border-top:2px solid #999999;
+    text-align:center; font-size:16px; color:#333333; }
   .sister-footer .sister-label { display:block; margin-bottom:10px; font-weight:bold; font-size:17px; }
   .sister-footer a { color:#1565c0; margin:0 10px; text-decoration:underline; line-height:2.2; }
 """
@@ -290,41 +290,41 @@ html = f"""<!DOCTYPE html>
          background: #fffdf7; color: #222; line-height: 1.7; }}
   .wrap {{ max-width: 560px; margin: 0 auto; padding: 20px 14px 60px; }}
   h1 {{ font-size: 34px; text-align: center; margin: 8px 0 2px; }}
-  .date {{ text-align: center; color: #5c5c5c; font-size: 18px; margin-bottom: 16px; }}
-  .card {{ background: #fff; border: 3px solid #e0e0e0; border-radius: 18px;
+  .date {{ text-align: center; color: #333333; font-size: 18px; margin-bottom: 16px; }}
+  .card {{ background: #fff; border: 3px solid #707070; border-radius: 18px;
            padding: 20px; margin-bottom: 16px; }}
   .center {{ text-align: center; }}
-  .label {{ font-size: 21px; color: #666; text-align: center; }}
+  .label {{ font-size: 21px; color: #333333; text-align: center; }}
   .big {{ font-size: 42px; font-weight: bold; margin: 6px 0; text-align: center; }}
   .mid {{ font-size: 26px; text-align: center; }}
   .stats {{ display: flex; justify-content: space-around; }}
-  .stats div {{ font-size: 18px; color: #666; text-align: center; }}
+  .stats div {{ font-size: 18px; color: #333333; text-align: center; }}
   .stats b {{ display: block; font-size: 30px; color: #222; }}
   table {{ width: 100%; border-collapse: collapse; font-size: 19px; }}
-  td {{ padding: 8px 4px; border-bottom: 1px solid #eee; }}
+  td {{ padding: 8px 4px; border-bottom: 2px solid #999999; }}
   .news {{ display: block; font-size: 19px; padding: 7px 0; color: #1565c0;
-           text-decoration: none; border-bottom: 1px solid #eee; }}
+           text-decoration: none; border-bottom: 2px solid #999999; }}
   .btn {{ display: block; text-align: center; font-size: 22px; background: #1565c0;
           color: #fff; text-decoration: none; border-radius: 14px; padding: 14px;
           margin: 8px 0; }}
   .btn.red {{ background: #c62828; }}
   .btn.green {{ background: #2e7d32; }}
-  .foot {{ text-align: center; color: #707070; font-size: 15px; }}
+  .foot {{ text-align: center; color: #444444; font-size: 15px; }}
   .vid {{ display: flex; gap: 10px; align-items: center; text-decoration: none;
-          color: #222; padding: 8px 0; border-bottom: 1px solid #eee; }}
+          color: #222; padding: 8px 0; border-bottom: 2px solid #999999; }}
   .vid img {{ width: 148px; border-radius: 10px; flex-shrink: 0; }}
   .vt {{ font-size: 17px; line-height: 1.4; display: block; }}
-  .vc {{ font-size: 14px; color: #707070; display: block; margin-top: 2px; }}
-  .ntime {{ display: block; font-size: 14px; color: #707070; margin-left: 1em; }}
+  .vc {{ font-size: 14px; color: #555555; display: block; margin-top: 2px; }}
+  .ntime {{ display: block; font-size: 14px; color: #555555; margin-left: 1em; }}
   .vgrid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }}
   .gvid {{ text-decoration: none; color: #222; display: block; }}
   .gvid img {{ width: 100%; border-radius: 10px; display: block; }}
   .gvid .vt {{ font-size: 15px; margin-top: 4px; }}
   .xembeds {{ margin-top: 10px; }}
-  th {{ text-align: left; font-size: 14px; color: #707070; padding: 4px; border-bottom: 2px solid #ddd; }}
-  .note {{ font-size: 13px; color: #707070; }}
+  th {{ text-align: left; font-size: 14px; color: #444444; padding: 4px; border-bottom: 2px solid #999999; }}
+  .note {{ font-size: 13px; color: #555555; }}
   .tblnote {{ margin-top: 8px; text-align: center; }}
-  .mininote {{ font-size: 14px; color: #5c5c5c; text-align: center; margin: 4px 0 2px; }}
+  .mininote {{ font-size: 14px; color: #333333; text-align: center; margin: 4px 0 2px; }}
   h2.sec {{ font-size: 26px; text-align: center; margin: 26px 0 10px; }}
 {SISTER_CSS}
 </style></head><body><div class="wrap">
@@ -526,23 +526,23 @@ app_html = f"""<!DOCTYPE html>
   body {{ margin:0; font-family:"Hiragino Sans","Yu Gothic",Meiryo,sans-serif; color:#222; }}
   .snap {{ height:100dvh; overflow-y:scroll; scroll-snap-type:y mandatory; }}
   .cardp {{ height:100dvh; scroll-snap-align:start; display:flex; flex-direction:column;
-           justify-content:center; padding:22px; box-sizing:border-box; border-bottom:4px solid #eee; background:#fffdf7; }}
-  .lab {{ font-size:26px; color:#5c5c5c; text-align:center; margin-bottom:12px; }}
+           justify-content:center; padding:22px; box-sizing:border-box; border-bottom:4px solid #999999; background:#fffdf7; }}
+  .lab {{ font-size:26px; color:#333333; text-align:center; margin-bottom:12px; }}
   .hbig {{ font-size:56px; font-weight:bold; text-align:center; margin:6px 0; }}
   .hmid {{ font-size:30px; text-align:center; line-height:1.6; }}
   table {{ width:100%; border-collapse:collapse; font-size:23px; }}
-  td {{ padding:9px 4px; border-bottom:1px solid #eee; }}
-  .news {{ display:block; font-size:23px; padding:11px 0; color:#1565c0; text-decoration:none; border-bottom:1px solid #eee; }}
-  .vid {{ display:flex; gap:12px; align-items:center; text-decoration:none; color:#222; padding:10px 0; border-bottom:1px solid #eee; }}
+  td {{ padding:9px 4px; border-bottom:2px solid #999999; }}
+  .news {{ display:block; font-size:23px; padding:11px 0; color:#1565c0; text-decoration:none; border-bottom:2px solid #999999; }}
+  .vid {{ display:flex; gap:12px; align-items:center; text-decoration:none; color:#222; padding:10px 0; border-bottom:2px solid #999999; }}
   .vid img {{ width:150px; border-radius:10px; }}
   .vt {{ font-size:20px; line-height:1.4; }}
   .vidbig {{ display:block; text-decoration:none; color:#222; text-align:center; }}
   .vidbig img {{ width:100%; border-radius:14px; }}
   .vt2 {{ display:block; font-size:24px; line-height:1.5; margin-top:8px; }}
   .tap {{ display:block; font-size:26px; color:#fff; background:#c62828; border-radius:14px; padding:12px; margin-top:10px; }}
-  .once {{ text-align:center; color:#5c5c5c; font-size:19px; margin-top:10px; }}
+  .once {{ text-align:center; color:#333333; font-size:19px; margin-top:10px; }}
   .golink {{ display:block; text-align:center; font-size:24px; color:#fff; background:#2e7d32; border-radius:14px; padding:12px; margin-top:16px; text-decoration:none; }}
-  .hint {{ position:fixed; bottom:8px; left:0; right:0; text-align:center; color:#bbb; font-size:17px; pointer-events:none; }}
+  .hint {{ position:fixed; bottom:8px; left:0; right:0; text-align:center; color:#555555; font-size:17px; pointer-events:none; }}
 {SISTER_CSS}
 </style></head><body>
 <div class="snap">
