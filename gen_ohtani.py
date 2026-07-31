@@ -329,6 +329,7 @@ html = f"""<!DOCTYPE html>
     {vids_html if vids_html else '<p style="font-size:18px;text-align:center">新しい動画を探しています</p>'}
     </div>
     <a class="btn red" href="{yt}" target="_blank">▶ もっとYouTubeで見る</a>
+    <a class="btn green" href="genchi.html">📹 現地で大谷さんを撮っている人たち</a>
     <div class="xembeds">
     {x_embeds_html}
     </div>
