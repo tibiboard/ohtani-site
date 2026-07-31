@@ -2,7 +2,7 @@
 """「今日の大谷選手」v2 — シニア向けデカ文字1ページ(全部入り)
 MLB公式スタッツAPI+Google News RSSから自動生成。毎日の定時実行で自動更新。
 """
-import io, sys, json, urllib.request, urllib.parse
+import io, sys, json, re, urllib.request, urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
@@ -174,6 +174,35 @@ for pub, title, vid, chname, _p in vids[:12]:
       <img src="https://i.ytimg.com/vi/{vid}/mqdefault.jpg" alt="" loading="lazy">
       <span class="vt">{title}</span><span class="vc">{chname}{" ・ " + ptxt if ptxt else ""}</span></a>\n'''
 
+# ---- お気に入り動画(相棒が「お気に入り動画.txt」にURLを1行ずつ足す方式) ----
+# 行形式: YouTubeのURL、半角スペースのあとにひとことコメント(任意)
+favs_card_html = ""
+try:
+    fav_html = ""
+    for line in open("お気に入り動画.txt", encoding="utf-8"):
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = line.split(None, 1)
+        url = parts[0]
+        comment = parts[1] if len(parts) > 1 else ""
+        m = re.search(r"(?:v=|youtu\.be/|shorts/|live/)([\w-]{11})", url)
+        if not m:
+            continue
+        vid = m.group(1)
+        fav_html += f'''<a class="gvid" href="https://www.youtube.com/watch?v={vid}" target="_blank">
+          <img src="https://i.ytimg.com/vi/{vid}/mqdefault.jpg" alt="" loading="lazy">
+          <span class="vt">{comment if comment else "お気に入りの1本"}</span></a>\n'''
+    if fav_html:
+        favs_card_html = f'''<div class="card" style="border-color:#e8a33d">
+    <div class="label" style="color:#b07714; font-weight:bold">⭐ お気に入り動画</div>
+    <div class="vgrid">
+    {fav_html}
+    </div>
+  </div>'''
+except FileNotFoundError:
+    pass
+
 # ---- Xのみんなの反応(公式oEmbed埋め込み・APIキー不要) ----
 # X公式の検索取得は有料APIのみのため、載せたいポストのURLを x_posts.json に手で追記する方式。
 # 例: {"posts": ["https://x.com/MLB/status/123456789"]}
@@ -323,6 +352,7 @@ html = f"""<!DOCTYPE html>
     <a class="btn green" href="#zenseiseki">📊 くわしい全成績はこのページの下へ</a>
   </div>
 
+  {favs_card_html}
   <div class="card" style="border-color:#c62828">
     <div class="label" style="color:#c62828; font-weight:bold">🔥 大谷選手の動画とみんなの反応</div>
     <div class="vgrid">
