@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""「今日の大谷さん」v2 — シニア向けデカ文字1ページ(全部入り)
+"""「今日の大谷選手」v2 — シニア向けデカ文字1ページ(全部入り)
 MLB公式スタッツAPI+Google News RSSから自動生成。毎日の定時実行で自動更新。
 """
 import io, sys, json, urllib.request, urllib.parse
@@ -255,7 +255,7 @@ nhk = "https://www.nhk.jp/timetable/"
 html = f"""<!DOCTYPE html>
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>今日の大谷さん</title>
+<title>今日の大谷選手</title>
 <style>
   body {{ font-family: "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif; margin: 0;
          background: #fffdf7; color: #222; line-height: 1.7; }}
@@ -299,7 +299,7 @@ html = f"""<!DOCTYPE html>
   h2.sec {{ font-size: 26px; text-align: center; margin: 26px 0 10px; }}
 {SISTER_CSS}
 </style></head><body><div class="wrap">
-  <h1>⚾ 今日の大谷さん</h1>
+  <h1>⚾ 今日の大谷選手</h1>
   <div class="date">{updated} 更新</div>
 
   <div class="card">
@@ -324,12 +324,12 @@ html = f"""<!DOCTYPE html>
   </div>
 
   <div class="card" style="border-color:#c62828">
-    <div class="label" style="color:#c62828; font-weight:bold">🔥 大谷さんの動画とみんなの反応</div>
+    <div class="label" style="color:#c62828; font-weight:bold">🔥 大谷選手の動画とみんなの反応</div>
     <div class="vgrid">
     {vids_html if vids_html else '<p style="font-size:18px;text-align:center">新しい動画を探しています</p>'}
     </div>
     <a class="btn red" href="{yt}" target="_blank">▶ もっとYouTubeで見る</a>
-    <a class="btn green" href="genchi.html">📹 現地で大谷さんを撮っている人たち</a>
+    <a class="btn green" href="genchi.html">📹 現地で大谷選手を撮っている人たち</a>
     <div class="xembeds">
     {x_embeds_html}
     </div>
@@ -337,7 +337,7 @@ html = f"""<!DOCTYPE html>
   </div>
 
   <div class="card">
-    <div class="label">大谷さんのニュース</div>
+    <div class="label">大谷選手のニュース</div>
     {news_html}
   </div>{genki_html}
 
@@ -478,8 +478,8 @@ for pub, title, vid, chname, _p in vids[:3]:
                  f'<span class="vt">{title}</span></a>')
 cards = [
     _card("きょうの天気(" + WX_NAME + ")", wx_html),
-    _card(f"{gdate}の大谷さん", f'<div class="hbig" style="color:{color}">{headline}</div><div class="hmid">{line}</div>'),
-    _card("大谷さんの今シーズン", f'<div class="hmid">ホームラン</div><div class="hbig">{season_hr}本</div><div class="hmid">打率 {season_avg} / 打点 {season_rbi}</div><a class="golink" href="index.html#zenseiseki">📊 全成績を見る</a>'),
+    _card(f"{gdate}の大谷選手", f'<div class="hbig" style="color:{color}">{headline}</div><div class="hmid">{line}</div>'),
+    _card("大谷選手の今シーズン", f'<div class="hmid">ホームラン</div><div class="hbig">{season_hr}本</div><div class="hmid">打率 {season_avg} / 打点 {season_rbi}</div><a class="golink" href="index.html#zenseiseki">📊 全成績を見る</a>'),
     _card("おすもう", sumo_html),
     _card("はたけ・家庭菜園", saien_html),
     _card("きょうの健康ひとこと", kenko_html),
@@ -491,7 +491,7 @@ cards = [
 app_html = f"""<!DOCTYPE html>
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>大谷さんと天気</title>
+<title>大谷選手と天気</title>
 <style>
   body {{ margin:0; font-family:"Hiragino Sans","Yu Gothic",Meiryo,sans-serif; color:#222; }}
   .snap {{ height:100dvh; overflow-y:scroll; scroll-snap-type:y mandatory; }}
@@ -645,7 +645,7 @@ season_ops2, season_sb2 = hit.get("ops", "-"), hit.get("stolenBases", "-")
 seiseki_updated = datetime.now(JST).strftime("%Y年%m月%d日 %H:%M")
 
 zenseiseki_cards = f"""
-  <h2 class="sec" id="zenseiseki">📊 大谷さんの全成績</h2>
+  <h2 class="sec" id="zenseiseki">📊 大谷選手の全成績</h2>
   <div class="date">{seiseki_updated} 時点(MLB公式StatsAPIより取得)</div>
 
   <div class="card">

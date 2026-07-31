@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""genchi.html 生成スクリプト — 現地で大谷さんを撮って届けてくれる個人チャンネル集
+"""genchi.html 生成スクリプト — 現地で大谷選手を撮って届けてくれる個人チャンネル集
 genchi_channels.json を読み、各チャンネルのRSSから最新動画を取得してページを作る。
 gen_ohtani.py とは独立(こちらは手動 or 週1程度の実行でOK)。
 使い方: python update_genchi.py
@@ -117,7 +117,7 @@ updated = datetime.now(JST).strftime("%Y年%m月%d日")
 html = f"""<!DOCTYPE html>
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>現地で大谷さんを撮っている人たち | 今日の大谷さん</title>
+<title>現地で大谷選手を撮っている人たち | 今日の大谷選手</title>
 <style>
   body {{ font-family: "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif; margin: 0;
          background: #fffdf7; color: #222; line-height: 1.7; }}
@@ -151,16 +151,16 @@ html = f"""<!DOCTYPE html>
   .note {{ font-size: 13px; color: #707070; }}
   .foot {{ text-align: center; color: #707070; font-size: 15px; margin-top: 24px; }}
 </style></head><body><div class="wrap">
-  <h1>📹 現地で大谷さんを<br>撮っている人たち</h1>
+  <h1>📹 現地で大谷選手を<br>撮っている人たち</h1>
   <div class="date">{updated} 更新</div>
-  <p class="lead">アメリカの球場まで足を運んで、大谷さんの姿を動画で届けてくれている個人のYouTubeチャンネル集です。みんなで応援しましょう。</p>
+  <p class="lead">アメリカの球場まで足を運んで、大谷選手の姿を動画で届けてくれている個人のYouTubeチャンネル集です。みんなで応援しましょう。</p>
 
   {pick_html}
 
   <h2 class="sec">🔎 もっと探す(全{len(channels)}チャンネル)</h2>
   {list_html}
 
-  <a class="btn" href="index.html">⚾ 「今日の大谷さん」トップへもどる</a>
+  <a class="btn" href="index.html">⚾ 「今日の大谷選手」トップへもどる</a>
 
   <div class="foot">非公式のファン情報ページです / 登録者数はおおよその数(更新日時点) / 掲載はすべて公開情報です。<br>掲載チャンネルはどれも応援の気持ちで紹介しています。</div>
 </div><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "be81dd55e4c042b09b9763edd4863484"}}'></script></body></html>"""
